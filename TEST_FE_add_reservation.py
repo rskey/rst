@@ -8,6 +8,17 @@ from src.BaseTest import BaseTest
 from src.LoginPage import LoginPage
 
 
+# ============================================================
+# DEBUG CONFIGURATION
+# ============================================================
+# Adjust this value to control pause duration between steps
+# - Set to 0 for normal test execution
+# - Set to 2-3 for debugging and visual observation
+# - Set to 5+ for detailed step-by-step inspection
+DEBUG_DELAY = 2  # seconds
+# ============================================================
+
+
 class TestAddReservation(BaseTest):
     """FE test: create reservation on testing88 (DEV FE)"""
 
@@ -22,6 +33,7 @@ class TestAddReservation(BaseTest):
         login_page = LoginPage(driver)
         driver.get(self.environment_url)
         login_page.login(current_user)
+        time.sleep(DEBUG_DELAY)
 
         print("\n--- PHASE 2: SEARCH FOR TESTING88 IN DASHBOARD ---")
 
@@ -38,6 +50,7 @@ class TestAddReservation(BaseTest):
         search_box.send_keys("testing88")
         time.sleep(1)  # Allow search results to populate
         print("✅ Searched for testing88")
+        time.sleep(DEBUG_DELAY)
 
         print("\n--- PHASE 3: CLICK VISIBILITY ICON TO VIEW TESTRACK DETAILS ---")
 
@@ -50,7 +63,8 @@ class TestAddReservation(BaseTest):
 
         # Scroll testrack item into view
         driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", testrack_item)
-        time.sleep(0.5)
+        time.sleep(DEBUG_DELAY)
+        print("✅ Testrack item scrolled into view")
 
         # Find the visibility icon within rtl-connect-button
         # Based on Puppeteer recording: div.testracks rtl-connect-button mat-icon
@@ -65,12 +79,14 @@ class TestAddReservation(BaseTest):
 
         # Scroll icon into view and move to it
         driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", visibility_icon)
-        time.sleep(0.3)
+        print("✅ Visibility icon found and scrolled into view")
+        time.sleep(DEBUG_DELAY)
         
         # Use ActionChains to hover and click
         actions = ActionChains(driver)
         actions.move_to_element(visibility_icon).perform()
-        time.sleep(0.2)
+        print("✅ Hovering over visibility icon")
+        time.sleep(DEBUG_DELAY)
         
         # Try clicking, with JavaScript fallback
         try:
@@ -80,7 +96,7 @@ class TestAddReservation(BaseTest):
             driver.execute_script("arguments[0].click();", visibility_icon)
         
         print("✅ Clicked visibility icon for testing88")
-        time.sleep(1)
+        time.sleep(DEBUG_DELAY)
 
         print("\n--- PHASE 4: NAVIGATE TO RESERVATIONS PAGE ---")
 
@@ -92,7 +108,7 @@ class TestAddReservation(BaseTest):
         )
         reservations_nav.click()
         print("✅ Navigated to Reservations page")
-        time.sleep(1)
+        time.sleep(DEBUG_DELAY)
 
         print("\n--- PHASE 5: SELECT TESTING88 TESTRACK IN RESERVATIONS ---")
 
@@ -104,7 +120,7 @@ class TestAddReservation(BaseTest):
         )
         testing88_link.click()
         print("✅ Selected testing88 testrack")
-        time.sleep(1)
+        time.sleep(DEBUG_DELAY)
 
         print("\n--- PHASE 6: CREATE RESERVATION BY CLICKING CALENDAR ---")
 
@@ -125,10 +141,11 @@ class TestAddReservation(BaseTest):
         
         # Scroll to calendar cell and click
         driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", calendar_cell)
-        time.sleep(0.3)
+        print("✅ Calendar cell scrolled into view")
+        time.sleep(DEBUG_DELAY)
         calendar_cell.click()
         print("✅ Clicked calendar to create reservation")
-        time.sleep(1)
+        time.sleep(DEBUG_DELAY)
 
         print("\n--- PHASE 7: FILL RESERVATION FORM ---")
 
@@ -141,6 +158,7 @@ class TestAddReservation(BaseTest):
         title_input.clear()
         title_input.send_keys("testing FE reservation")
         print("✅ Entered reservation title")
+        time.sleep(DEBUG_DELAY)
 
         # Click Reservation Type dropdown
         reservation_type_field = wait.until(
@@ -149,7 +167,8 @@ class TestAddReservation(BaseTest):
             )
         )
         reservation_type_field.click()
-        time.sleep(0.5)
+        print("✅ Opened reservation type dropdown")
+        time.sleep(DEBUG_DELAY)
 
         # Select "Manual testing" option
         manual_testing_option = wait.until(
@@ -159,7 +178,7 @@ class TestAddReservation(BaseTest):
         )
         manual_testing_option.click()
         print("✅ Selected 'Manual testing' as reservation type")
-        time.sleep(0.5)
+        time.sleep(DEBUG_DELAY)
 
         print("\n--- PHASE 8: CONFIRM RESERVATION ---")
 
@@ -171,7 +190,7 @@ class TestAddReservation(BaseTest):
         )
         confirm_button.click()
         print("✅ Clicked CONFIRM button")
-        time.sleep(2)
+        time.sleep(DEBUG_DELAY)
 
         # Verify success (you may need to adjust this based on your app's behavior)
         # Option 1: Check for success message
@@ -185,6 +204,8 @@ class TestAddReservation(BaseTest):
         except Exception:
             # Option 2: Verify by checking if we're back on calendar view
             print("✅ Reservation created (verified by UI state)")
+        
+        time.sleep(DEBUG_DELAY)
 
         print("\n--- PHASE 9: RETURN TO DASHBOARD ---")
 
@@ -196,9 +217,10 @@ class TestAddReservation(BaseTest):
         )
         dashboard_nav.click()
         print("✅ Returned to dashboard")
+        time.sleep(DEBUG_DELAY)
         
-        time.sleep(2)
         print("\n✅ TEST COMPLETED SUCCESSFULLY")
+        time.sleep(DEBUG_DELAY)
 
 
 if __name__ == "__main__":
