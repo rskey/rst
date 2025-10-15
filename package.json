@@ -1,0 +1,19 @@
+{
+  "name": "fe-add-reservation-test",
+  "version": "1.0.0",
+  "description": "Puppeteer test for adding a reservation to testing88 testrack",
+  "main": "TEST_FE_add_reservation.js",
+  "scripts": {
+    "test": "node TEST_FE_add_reservation.js"
+  },
+  "keywords": [
+    "puppeteer",
+    "test",
+    "automation"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^23.0.0"
+  }
+}
